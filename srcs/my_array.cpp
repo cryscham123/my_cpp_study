@@ -1,24 +1,15 @@
-//#include "../includes/my_array.h"
-#include "my_array.h"
+#include "../includes/my_array.h"
+//#include "my_array.h"
 
 my_array::my_array(int N, int *size)
 :N(N), size(size)
 {
-	if (N < 1)
-	{
-		arr_error(1);
-		top = NULL;
-		return ;
-	}
 	top = new list;
 	top->level = 0;
 	int flag = initialize_list(top);
 	if (flag != 0)
 	{
 		arr_error(flag);
-		delete_list(top);
-		delete top;
-		top = NULL;
 		return ;
 	}
 }
@@ -34,11 +25,8 @@ my_array::my_array(const my_array &arr)
 
 my_array::~my_array()
 {
-	if (top != NULL)
-	{
-		delete_list(top);
-		delete top;
-	}
+	delete_list(top);
+	delete top;
 }
 
 void my_array::arr_error(int flag)
@@ -62,7 +50,10 @@ void my_array::arr_error(int flag)
 int my_array::initialize_list(list *n)
 {
 	if (size[n->level] <= 0)
+	{
+		n->nxt = NULL;
 		return (2);
+	}
 	if(n->level == N - 1)
 	{
 		n->nxt = new int[size[n->level]];
@@ -93,15 +84,15 @@ void my_array::copy_list(list *dst, list *src)
 
 void my_array::delete_list(list *n)
 {
-	if (n->level == N-1)
-	{
-		delete[] static_cast<int *>(n->nxt);
-		return ;
-	}
-	list *target = static_cast<list *>(n->nxt);
+	void *target = n->nxt;
 	if (target == NULL)
 		return ;
+	if (n->level == N-1)
+	{
+		delete[] static_cast<int *>(target);
+		return ;
+	}
 	for (int i=0; i < size[n->level]; i++)
-		delete_list(target + i);
-	delete[] target;
+		delete_list(static_cast<list *>(target) + i);
+	delete[] static_cast<list *>(target);
 }
