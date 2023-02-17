@@ -1,7 +1,9 @@
 #include "../includes/my_array.h"
 //#include "my_array.h"
 
-my_array::my_array(int N, int *size)
+using namespace my_array;
+
+array::array(int N, int *size)
 :N(N), size(size)
 {
 	top = new list;
@@ -14,7 +16,7 @@ my_array::my_array(int N, int *size)
 	}
 }
 
-my_array::my_array(const my_array &arr)
+array::array(const array &arr)
 :N(arr.N), size(arr.size)
 {
 	top = new list;
@@ -23,13 +25,13 @@ my_array::my_array(const my_array &arr)
 	copy_list(top, arr.top);
 }
 
-my_array::~my_array()
+array::~array()
 {
 	delete_list(top);
 	delete top;
 }
 
-void my_array::arr_error(int flag)
+void array::arr_error(int flag)
 {
 	switch (flag)
 	{
@@ -47,7 +49,7 @@ void my_array::arr_error(int flag)
 // allocate list recursivly
 // if user give proper size, return 0
 // or return error flag
-int my_array::initialize_list(list *n)
+int array::initialize_list(list *n)
 {
 	if (size[n->level] <= 0)
 	{
@@ -70,7 +72,7 @@ int my_array::initialize_list(list *n)
 	return (0);
 }
 
-void my_array::copy_list(list *dst, list *src)
+void array::copy_list(list *dst, list *src)
 {
 	if(dst->level == N-1)
 	{
@@ -82,7 +84,7 @@ void my_array::copy_list(list *dst, list *src)
 		copy_list(static_cast<list *>(dst->nxt) + i, static_cast<list *>(src->nxt) + i);
 }
 
-void my_array::delete_list(list *n)
+void array::delete_list(list *n)
 {
 	void *target = n->nxt;
 	if (target == NULL)
@@ -95,4 +97,32 @@ void my_array::delete_list(list *n)
 	for (int i=0; i < size[n->level]; i++)
 		delete_list(static_cast<list *>(target) + i);
 	delete[] static_cast<list *>(target);
+}
+
+INT array::operator [](const int index)
+{
+	return (INT(N, 1, static_cast<list *>(top->nxt) + index));
+}
+
+INT::INT(const int N, int level, void *data)
+: N(N), level(level), data(data)
+{}
+
+INT INT::operator[] (const int index)
+{
+	if (level == N-1)
+		return (INT(N, N, static_cast<int *>(static_cast<array::list *>(data)->nxt) + index));
+	else
+		return (INT(N, level + 1, static_cast<array::list *>(static_cast<array::list *>(data)->nxt) + index));
+}
+
+INT &INT::operator = (const int &a)
+{
+	*static_cast<int *>(data) = a;
+	return (*this);
+}
+
+INT::operator int()
+{
+	return (*static_cast<int *>(data));
 }

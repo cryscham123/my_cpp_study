@@ -3,26 +3,49 @@
 
 # include <iostream>
 
-class my_array
+namespace my_array
 {
-	struct list
-	{
-		int		level;
-		void	*nxt;
-	};
-	const int	N;
-	int			*size;
-	list		*top;
+	class array;
+	class INT;
 
-	public:
-		explicit my_array(int N, int *size);
-		my_array(const my_array &arr);
-		~my_array();
-		
-		int initialize_list(list *n);
-		void copy_list(list *dst, list *src);
-		void delete_list(list *n);
-		void arr_error(int flag);
-};
+	class array
+	{
+		friend INT;
+		struct list
+		{
+			int		level;
+			void	*nxt;
+		};
+		const int	N;
+		int			*size;
+		list		*top;
+
+		public:
+			explicit array(int N, int *size);
+			array(const array &arr);
+			~array();
+			
+			int initialize_list(list *n);
+			void copy_list(list *dst, list *src);
+			void delete_list(list *n);
+			void arr_error(int flag);
+
+			INT operator [](const int index);
+	};
+
+	class INT
+	{
+		const int	N;
+		void		*data;
+		int			level;
+
+		public:
+			INT(const int N, int _level = 0, void *_data = NULL);
+			
+			INT operator [] (const int index);
+			INT &operator = (const int& a);
+			operator int();
+	};
+}
 
 # endif
