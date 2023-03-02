@@ -1,10 +1,17 @@
-NAME=main
-SRC=./srcs
-OBJS= $(SRC)/main.o $(SRC)/my_string.o $(SRC)/my_complex.o $(SRC)/my_array.o $(SRC)/inherit_example.o $(SRC)/my_vector.o $(SRC)/my_stack.o $(SRC)/my_excel.o
+HEADER=includes
+SRC=./srcs/objects
+LIBR=libmystd.so
+OBJS= $(SRC)/my_string.o \
+	  $(SRC)/my_complex.o \
+	  $(SRC)/my_array.o \
+	  $(SRC)/inherit_example.o \
+	  $(SRC)/my_vector.o \
+	  $(SRC)/my_stack.o \
+	  $(SRC)/my_excel.o
 CC=g++
-HEADER= includes
+FLAG=-fPIC
 
-all: $(NAME)
+all: $(LIBR)
 
 re:
 	make fclean
@@ -15,13 +22,12 @@ clean:
 
 fclean:
 	make clean
-	rm -f $(NAME)
+	rm -f $(LIBR)
 
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
-	make clean
+$(LIBR): $(OBJS)
+	$(CC) -shared -o $(LIBR) $(OBJS)
 
-%.o: %.cpp
-	$(CC) -c $< -I$(HEADER) -o $@
+%.o: ../%.cpp
+	$(CC) -c $(FLAG) $< -I$(HEADER) -o $@
 
 .PHONY: re fclean clean
