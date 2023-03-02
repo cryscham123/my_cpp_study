@@ -1,6 +1,6 @@
 NAME=main
 SRC=./srcs
-OBJS= $(SRC)/main.o $(SRC)/my_string.o $(SRC)/my_complex.o $(SRC)/my_array.o $(SRC)/inherit_example.o $(SRC)/my_vector.o $(SRC)/my_stack.o
+OBJS= $(SRC)/main.o $(SRC)/my_string.o $(SRC)/my_complex.o $(SRC)/my_array.o $(SRC)/inherit_example.o $(SRC)/my_vector.o $(SRC)/my_stack.o $(SRC)/my_excel.o
 CC=g++
 HEADER= includes
 
