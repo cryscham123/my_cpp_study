@@ -1,9 +1,9 @@
-# include "../includes/my_stack.h"
+#include "my_stack.h"
 
 using namespace my_stack;
 
 stack::stack()
-:start(NULL, ""), current(&start) {}
+	: start(NULL, ""), current(&start) {}
 
 stack::~stack()
 {

@@ -1,9 +1,9 @@
-# include "../includes/my_vector.h"
+#include "my_vector.h"
 
 using namespace my_vector;
 
 vector::vector(int n)
-:capacity(n), length(0), data(new string[n]) {}
+	: capacity(n), length(0), data(new string[n]) {}
 
 vector::~vector()
 {
@@ -17,7 +17,7 @@ void vector::push_back(string s)
 	{
 		capacity *= 2;
 		string *tmp = new string[capacity];
-		for (int i=0; i<length; i++)
+		for (int i = 0; i < length; i++)
 			tmp[i] = data[i];
 		delete[] data;
 		data = tmp;
@@ -27,8 +27,8 @@ void vector::push_back(string s)
 
 void vector::remove(int x)
 {
-	for (int i=x+1; i<length; i++)
-		data[i-1] = data[i];
+	for (int i = x + 1; i < length; i++)
+		data[i - 1] = data[i];
 	length--;
 }
 
@@ -36,7 +36,7 @@ int vector::size() const
 {
 	return (length);
 }
-string vector::operator [] (int i) const
+string vector::operator[](int i) const
 {
 	return (data[i]);
 }
