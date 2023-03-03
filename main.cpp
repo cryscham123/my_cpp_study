@@ -1,10 +1,6 @@
-#include "my_vector.h"
-
-using namespace my_vector;
+#include "my_string.h"
 
 int main()
 {
-    vector test(2);
-    test.push_back("hello");
-    cout << test.size();
+    cout << concat(my_string("this"), " ", "is", " ", my_string("a"), " ", my_string("sentence\n"));
 }
