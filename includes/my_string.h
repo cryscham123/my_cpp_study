@@ -32,13 +32,8 @@ public:
 
 my_string operator+(const my_string &a, const my_string &b);
 
-template <typename T>
-my_string concat(const T &s)
+template <typename... T>
+my_string concat(T... s)
 {
-	return s;
-}
-template <typename T, typename... TS>
-my_string concat(const T &s, TS... ss)
-{
-	return (s + concat(ss...));
+	return (... + s);
 }
