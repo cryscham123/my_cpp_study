@@ -21,8 +21,13 @@ my_string::my_string(const my_string &s)
 	strcpy(str, s.str);
 }
 
-my_string::my_string(int n)
-	: size(0), capacity(n)
+my_string::my_string(my_string &&s) noexcept
+	: size(s.size), capacity(s.capacity), str(s.str)
+{
+	s.str = nullptr;
+}
+
+my_string::my_string(int n) : size(0), capacity(n)
 {
 	str = new char[n];
 }
@@ -98,6 +103,6 @@ ostream &operator<<(ostream &o, const my_string &s)
 
 my_string::~my_string()
 {
-	if (str)
+	if (str != nullptr)
 		delete[] str;
 }

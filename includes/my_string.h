@@ -16,6 +16,7 @@ public:
 	my_string(const char *s);
 	explicit my_string(int n);
 	my_string(const my_string &s);
+	my_string(my_string &&s) noexcept;
 
 	void append(const my_string &s);
 	void reserve(int n);

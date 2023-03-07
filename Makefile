@@ -1,40 +1,37 @@
 TARGET=main
-HEADER=includes
-SRC=./srcs/objects
-LIBPATH=./libs
-LIBR=$(LIBPATH)/libmystd.so
-OBJS= \
-	$(SRC)/my_string.o \
-	$(SRC)/my_complex.o \
-	$(SRC)/my_array.o \
-	$(SRC)/inherit_example.o \
-	$(SRC)/my_vector.o \
-	$(SRC)/my_stack.o \
-	$(SRC)/my_excel.o
+INCLUDE=-Iincludes
+SRC_DIR=./srcs
+OBJ_DIR=./objs
+LIB_DIR=./libs
+LIB=$(LIB_DIR)/libmystd.so
 CC=g++
-FLAG=-fPIC
+CXXFLAGS=-fPIC
+
+SRCS = $(notdir $(wildcard $(SRC_DIR)/*.cpp))
+OBJS = $(SRCS:.cpp=.o)
+OBJECTS = $(patsubst %.o,$(OBJ_DIR)/%.o,$(OBJS))
 
 all: $(TARGET)
+
+.PHONY: re clean fclean
 
 re:
 	make fclean
 	make all
 
 clean:
-	rm -f $(SRC)/*.o
+	rm -f $(OBJ_DIR)/*.o
 
 fclean:
 	make clean
-	rm -f $(LIBR)
+	rm -f $(LIB)
 
-$(TARGET): $(LIBR)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./libs
-	$(CC) -o $@ main.cpp -L$(LIBPATH) -lmystd -I$(HEADER)
+$(TARGET): $(LIB)
+	export LD_LIBRARY_PATH=./libs
+	$(CC) -o $@ main.cpp -L$(LIB_DIR) -lmystd $(INCLUDE)
 
-$(LIBR): $(OBJS)
-	$(CC) -shared -o $@ $(OBJS)
+$(LIB): $(OBJECTS)
+	$(CC) -shared -o $@ $(OBJECTS)
 
-%.o: ../%.cpp
-	$(CC) -c $(FLAG) $< -I$(HEADER) -o $@
-
-.PHONY: re fclean clean
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
